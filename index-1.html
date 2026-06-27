@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApexPlanet Task 3</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f7f9;color:#222}
+header{background:#0b7a75;color:#fff;padding:18px;text-align:center}
+nav{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;padding:10px;background:#055}
+nav a{color:#fff;text-decoration:none}
+.hero{padding:40px;text-align:center}
+.container{max-width:900px;margin:auto;padding:20px}
+.card{background:#fff;padding:20px;margin:20px 0;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+button{background:#0b7a75;color:#fff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer}
+button:hover{background:#095e5b}
+@media(max-width:768px){
+.hero{padding:20px}
+nav{flex-direction:column}
+h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+<header><h1>ApexPlanet Task 3</h1><p>Responsive Design + JavaScript Quiz + API Fetch</p></header>
+<nav>
+<a href="#quiz">Quiz</a>
+<a href="#api">Random Joke</a>
+</nav>
+
+<section class="hero">
+<h2>Responsive Web Page</h2>
+<p>Resize the browser to see responsive layout.</p>
+</section>
+
+<div class="container">
+
+<div class="card" id="quiz">
+<h2>JavaScript Quiz</h2>
+<p id="question"></p>
+<div id="answers"></div><br>
+<button onclick="nextQuestion()">Next</button>
+<p id="score"></p>
+</div>
+
+<div class="card" id="api">
+<h2>Random Joke API</h2>
+<p id="joke">Click the button to load a joke.</p><br>
+<button onclick="loadJoke()">Get Joke</button>
+</div>
+
+</div>
+
+<script>
+const quiz=[
+{q:"HTML stands for?",a:["Hyper Text Markup Language","Home Tool Markup","Hyper Tool"],c:0},
+{q:"Which language styles webpages?",a:["Python","CSS","Java"],c:1},
+{q:"JavaScript is mainly used for?",a:["Interactivity","Database","OS"],c:0}
+];
+let i=0,s=0;
+function show(){
+if(i>=quiz.length){
+document.getElementById("question").innerHTML="Quiz Finished!";
+document.getElementById("answers").innerHTML="";
+document.getElementById("score").innerHTML="Your Score: "+s+"/"+quiz.length;
+return;
+}
+document.getElementById("question").innerHTML=quiz[i].q;
+let h="";
+quiz[i].a.forEach((x,n)=>h+=`<p><button onclick="check(${n})">${x}</button></p><br>`);
+document.getElementById("answers").innerHTML=h;
+}
+function check(n){
+if(n===quiz[i].c)s++;
+}
+function nextQuestion(){i++;show();}
+show();
+
+async function loadJoke(){
+const res=await fetch("https://official-joke-api.appspot.com/random_joke");
+const data=await res.json();
+document.getElementById("joke").innerHTML="<b>"+data.setup+"</b><br><br>"+data.punchline;
+}
+</script>
+</body>
+</html>
